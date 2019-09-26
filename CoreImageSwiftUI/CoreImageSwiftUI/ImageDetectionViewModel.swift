@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 import Combine
 
-class ImageDetectionViewModel {
+class ImageDetectionViewModel:ObservableObject{
     
     var  name:String = ""
     var manager: ImageDetectionManager
@@ -21,10 +21,13 @@ class ImageDetectionViewModel {
         
     }
     func detect(_ name: String) {
-        //resizethje image
+        let sourceImage = UIImage(named: name)
+        guard let resizedImage = sourceImage?.resizeImage(targetSize: CGSize(width: 224, height: 224)) else {
+            fatalError("Unable to resize the image!")
+        }
+        if let label = self.manager.detect(resizedImage){
+            self.PredictionLabel = label
+        }
         
-        //detect the image
-        
-        //update the prediction label with the image prediction
     }
 }
